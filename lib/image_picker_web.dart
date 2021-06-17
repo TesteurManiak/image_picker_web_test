@@ -58,7 +58,6 @@ class ImagePickerWeb {
     // https://github.com/miguelpruivo/flutter_file_picker/blob/master/lib/src/file_picker_web.dart
     void cancelledEventListener(html.Event e) {
       html.window.removeEventListener('focus', cancelledEventListener);
-      html.window.removeEventListener('touchend', cancelledEventListener);
 
       // This listener is called before the input changed event,
       // and the `uploadInput.files` value is still null
@@ -76,8 +75,6 @@ class ImagePickerWeb {
 
     // Listen focus event for cancelled
     html.window.addEventListener('focus', cancelledEventListener);
-
-    html.window.addEventListener('touchend', cancelledEventListener);
 
     input.click();
 
