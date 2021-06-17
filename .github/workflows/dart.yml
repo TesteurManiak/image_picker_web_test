@@ -1,23 +1,29 @@
-name: Flutter Web CI
-
+name: Flutter Web
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+    branches:
+      - main
 jobs:
   build:
+    name: Build Web
+    env:
+      my_secret: ${{secrets.commit_secret}}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: subosito/flutter-action@v1
-    - run: flutter pub get
-    - run: flutter format --set-exit-if-changed .
-    - name: Analyze project source
-      run: flutter analyze
-      working-directory: ./lib
-    - name: Build example
-      run: flutter build web
-      working-directory: example
-
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1.5.0
+        with:
+          channel: 'stable'
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: flutter build web --release
+      - run: |
+          cd build/web
+          git init 
+          git config --global user.email rouxguillaume8@gmail.com 
+          git config --global user.name "Guillaume Roux"
+          git remote add origin https://${{secrets.commit_secret}}@github.com/TesteurManiak/image_picker_web_test.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push origin gh-pages -f
