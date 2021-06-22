@@ -22,6 +22,12 @@ class _SamplePageState extends State<SamplePage> {
         _pickedImages.clear();
         _pickedImages.add(fromPicker);
       });
+    } else {
+      await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: Text('Cancelled action'),
+              ));
     }
   }
 
